@@ -7,7 +7,7 @@ import { useQuery } from '@apollo/react-hooks';
 function App() {
   const { loading, error, data } = useQuery(gql`
     query getWishlists {
-      users(where: {id: {_eq: 1}}) {
+      users(where: { id: { _eq: 1 } }) {
         id
         email
         wishlists {
@@ -29,11 +29,40 @@ function App() {
     return <div>An error occurred</div>;
   }
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  const user = data.users[0];
+  return (
     <div>
-      {JSON.stringify(data)}
+      <div>{user.email}</div>
+      {user.wishlists.map((wishlist) => (
+        <Wishlist item={wishlist} />
+      ))}
+    </div>
+  );
+}
+
+function Wishlist({ item }) {
+  const { name } = item;
+  return (
+    <div>
+      <h2>{name}</h2>
+      <ul>
+        {item.wishlist_products.map((item) => (
+          <Product item={item} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function Product({ item }) {
+  const { name, price } = item.product;
+  return (
+    <div>
+      {name} {price}
     </div>
   );
 }
