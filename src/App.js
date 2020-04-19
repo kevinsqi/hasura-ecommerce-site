@@ -18,6 +18,7 @@ function App() {
               id
               name
               price
+              image_url
             }
           }
         }
@@ -59,10 +60,14 @@ function Wishlist({ item }) {
 }
 
 function Product({ item }) {
-  const { name, price } = item.product;
+  const { name, price, image_url } = item.product;
   return (
-    <div>
-      {name} {price}
+    <div style={{ width: 200 }}>
+      <img src={image_url} alt={name} style={{ width: '100%' }} />
+      <div>
+        <strong>{name}</strong>
+      </div>
+      <div>{price}</div>
     </div>
   );
 }
